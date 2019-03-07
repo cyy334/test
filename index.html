@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+	<script src="data.js"></script>
+	<style>
+		.panel {
+			border: 1px solid #000;
+			width: 600px;
+		}
+		.title {
+			margin: 0;
+			padding: 10px;
+			background: #ccc;
+		}
+		p.vip {
+			color: red;
+		}
+		p.message {
+			color: #aaa;
+		}
+	</style>
+</head>
+<body>
+	<div id="box"></div>
+	<script type="text/babel">
+		class List extends React.Component {
+			render(){
+				return (
+					<ul>
+						{
+							this.props.list.map((item,index)=>{
+									return (
+										<li key={index}>
+											<p className={item.vip?"vip":""}>{item.username}</p>
+											<p className="message">{item.message}</p>
+										</li>
+									)
+								}
+							)
+						}
+					</ul>	
+				);
+			}
+		}
+		class Item extends React.Component {
+			constructor(){
+				super(...arguments)
+				this.state = {
+					show: this.props.show
+				};
+			}
+			changeList(){
+				let show = !this.props.show;
+				this.setState({
+					show 
+				});
+				if(show){
+					console.log("操作")
+				}
+			}
+			render(){
+				return (
+					<div>
+						<h2 className="title" onClick={this.changeList.bind(this)}>{this.props.data.name}</h2>
+						{this.state.show?<List list={this.props.data.list} />:""}
+					</div>
+				);
+			}
+		}
+		class Penel extends React.Component {
+			constructor(){
+				super(...arguments)
+				this.state = {
+					showList:[true,false,false]
+				}
+			}
+			setShow(){
+				let list = Object.keys(dataList).map((val,index)=>{
+						return <Item key={index} data={dataList[val]} show={this.state.showList[index]} />
+				});
+				return list
+			}
+			render(){
+				return(
+					<div className="panel">
+						{this.setShow()}
+					</div>
+					
+				);
+			}
+		}
+		ReactDOM.render(
+		<Penel />
+		,document.querySelector('#box')
+		);
+	</script>
+</body>
+</html>
